@@ -1,6 +1,7 @@
 import requests
 from bs4 import BeautifulSoup
 import pandas
+import sqlite_client
 # pip install beautifulsoup4
 # pip install pandas
 
@@ -34,12 +35,14 @@ def save_to_csv(mebel_items):
 
 
 def save_to_sqlite(mebel_items):
-    pass
+    connection = sqlite_client.get_connection()
+    for item in mebel_items:
+        sqlite_client.insert(connection, item[0], item[1], item[2])
 
 def run():
     mebel_items = []
     for link in links_to_parce:
         mebel_items.extend(get_mebel_by_link(link))
-    save_to_csv(mebel_items)
+    save_to_sqlite(mebel_items)
 
 run()

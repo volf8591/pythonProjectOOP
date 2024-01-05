@@ -8,6 +8,9 @@ class StudentsRepo(ABC):
     @abstractmethod
     def load_students(self):
         pass
+    @abstractmethod
+    def get_config(self):
+        pass
 
     # @abstractmethod
     # def show_menu(self):
@@ -25,9 +28,16 @@ class StudentsRepoXlsx(StudentsRepo):
     STUDENTS_FILE_NAME = 'marks.xlsx'
     CONFIG_FILE_NAME = 'initial_config.json'
 
+
+    def get_config(self):
+        with open(self.CONFIG_FILE_NAME, 'r+', encoding='utf-8') as fp:
+            data = json.load(fp)
+        return data
+
     def updata_wit_initial_students(self, students):
         new_students = {}
-        with open(self.STUDENTS_FILE_NAME, 'r+', encoding='utf-8') as fp:
+
+        with open(self.CONFIG_FILE_NAME, 'r+', encoding='utf-8') as fp:
             data = json.load(fp)
             initial_students = data['users']
 
@@ -38,7 +48,6 @@ class StudentsRepoXlsx(StudentsRepo):
                     name=login,
                     password=data['password'],
                     role=data['role'],
-
                     marks=marks
                 )
             else:

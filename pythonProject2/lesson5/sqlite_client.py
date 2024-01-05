@@ -1,9 +1,9 @@
 import sqlite3
-from bs4 import BeautifulSoup
+import io
 from sqlite3 import Error
-from
 
-def sql_connection():
+
+def get_connection():
     try:
         conn = sqlite3.connect('kufar.db')
         return conn
@@ -26,22 +26,24 @@ def create_mebel_table(conn):
     )
     conn.commit()
 
-def get_items(conn):
+def get_items(conn, price_from=0, price_to=100000 ):
     cursor = conn.cursor()
-    cursor.execute('SELECT * FROM mebel')
+    cursor.execute(f'SELECT * FROM mebel WHERE price >= {price_from} and price <= {price_to}')
     return cursor.fetchall()
 
 
 def insert(conn, link, price, description):
     cursor = conn.cursor()
-    cursor.execute(f"INSERT INTO mebel('{link}', '{price}', '{description}')")
-    return cursor.fetchall()
+    cursor.execute(f"INSERT INTO mebel(link, price, description) VALUES ('{link}', '{price}', '{description}')")
+    conn.commit()
+
 
 def sqlite_test():
-    # conn = sql_connection()
-    # create_mebel_table(conn)
-    # print(get_items(conn))
-    # conn.close()
-    pass
+    conn = get_connection()
+    create_mebel_table(conn)
+    items = get_items(conn, 100, 200)
+    for item in items:
+        print(item)
+    conn.close()
 
-# sqlite_test()
+sqlite_test()

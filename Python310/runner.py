@@ -7,7 +7,9 @@ class TestProgramRunner:
     def run(self):
         students = self.repo.load_students()
         login, password = Utils.input_login_pass()
-        Utils.check_is_registered(students, login, password)
+        student = Utils.check_is_registered(students, login, password)
+        Utils.try_to_show_menu(student)
+
 
 runner = TestProgramRunner()
 runner.run()

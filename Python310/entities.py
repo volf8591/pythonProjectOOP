@@ -1,5 +1,5 @@
 from dataclasses import dataclass, field
-ADMIN_ACCESS = 'ADMIN ACCESS'
+ADMIN_ACCESS = 'ADMIN_ACCESS'
 STUDENT_ACCESS = 'STUDENT_ACCESS'
 
 
